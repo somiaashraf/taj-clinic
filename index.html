@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="htmlTag">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAJ Dental Clinics - Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e293b;
+            --accent: #b59410; 
+        }
+        body {
+            font-family: 'Cairo', 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            transition: all 0.3s ease;
+        }
+        .form-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+        }
+        html[dir="ltr"] .lang-switch {
+            left: auto;
+            right: 20px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            margin-top: 5px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .input-field:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(181, 148, 16, 0.1);
+        }
+        .step-active {
+            border-bottom: 3px solid var(--accent);
+            color: var(--accent);
+            font-weight: bold;
+        }
+        .logo-container {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 15px;
+            background: #fff;
+            padding: 5px;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .logo-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .payment-option {
+            border: 2px solid #f1f5f9;
+            transition: all 0.2s ease;
+        }
+        .payment-option.selected {
+            border-color: var(--accent);
+            background-color: #fefce8;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <button onclick="toggleLanguage()" class="lang-switch bg-white border border-gray-300 px-4 py-2 rounded-full shadow-sm hover:bg-gray-50 font-bold text-sm flex items-center gap-2">
+        <span id="langText">English</span>
+    </button>
+
+    <div class="max-w-2xl mx-auto">
+        <div class="text-center mb-8">
+            <div class="logo-container">
+                <img src="img.jpg" alt="Taj Dental Clinic Logo" class="logo-img" >
+            </div>
+            <h1 id="title" class="text-2xl md:text-3xl font-bold text-slate-800">عيادات تاج لطب الأسنان</h1>
+            <p id="subtitle" class="text-gray-500 mt-1">د/ محمد عبد الناصر صبري</p>
+        </div>
+
+        <div class="form-card p-6 md:p-8">
+            <div class="flex justify-between mb-8 border-b border-gray-100">
+                <div id="step1-tab" class="flex-1 text-center pb-3 step-active"><span id="tab1">البيانات</span></div>
+                <div id="step2-tab" class="flex-1 text-center pb-3 text-gray-400"><span id="tab2">التاريخ المرضي</span></div>
+                <div id="step3-tab" class="flex-1 text-center pb-3 text-gray-400"><span id="tab3">الدفع</span></div>
+            </div>
+
+            <form id="bookingForm">
+                <!-- Step 1 -->
+                <div id="step1">
+                    <h2 class="text-lg font-bold mb-4 text-slate-700" id="step1-title">المعلومات الشخصية</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-1" id="lbl-name">الاسم ثلاثي</label>
+                            <input type="text" id="patientName" name="name" class="input-field" required>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold mb-1" id="lbl-age">السن</label>
+                                <input type="number" id="age" name="age" class="input-field" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-1" id="lbl-job">الوظيفة</label>
+                                <input type="text" id="job" name="job" class="input-field">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-1" id="lbl-address">العنوان</label>
+                            <input type="text" id="address" name="address" class="input-field" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-1" id="lbl-phone">رقم التواصل</label>
+                            <input type="tel" id="phone" name="phone" class="input-field" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-1">اختر موعد الحجز</label>
+                            <select id="appointmentTime" class="input-field" required>
+                                <option value="">اختر ميعاداً...</option>
+                                <option value="04:30 PM">04:30 مساءً</option>
+                                <option value="05:00 PM">05:00 مساءً</option>
+                                <option value="05:30 PM">05:30 مساءً</option>
+                                <option value="06:00 PM">06:00 مساءً</option>
+                                <option value="06:30 PM">06:30 مساءً</option>
+                                <option value="07:00 PM">07:00 مساءً</option>
+                                <option value="07:30 PM">07:30 مساءً</option>
+                                <option value="08:00 PM">08:00 مساءً</option>
+                                <option value="08:30 PM">08:30 مساءً</option>
+                                <option value="09:00 PM">09:00 مساءً</option>
+                                <option value="09:30 PM">09:30 مساءً</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" onclick="nextStep(2)" class="w-full mt-8 bg-slate-800 text-white py-4 rounded-xl font-bold hover:bg-slate-700 transition" id="btn-next1">التالي</button>
+                </div>
+
+                <!-- Step 2 -->
+                <div id="step2" class="hidden">
+                    <h2 class="text-lg font-bold mb-4 text-slate-700" id="step2-title">هل تعاني من أي من الآتي؟</h2>
+                    <div class="grid grid-cols-2 gap-3 mb-6">
+                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                            <input type="checkbox" name="health" value="سكر" class="ml-2 mr-2"> <span id="h-diabetes">سكر</span>
+                        </label>
+                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                            <input type="checkbox" name="health" value="ضغط" class="ml-2 mr-2"> <span id="h-pressure">ضغط</span>
+                        </label>
+                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                            <input type="checkbox" name="health" value="كبد" class="ml-2 mr-2"> <span id="h-liver">كبد</span>
+                        </label>
+                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                            <input type="checkbox" name="health" value="قلب" class="ml-2 mr-2"> <span id="h-heart">قلب</span>
+                        </label>
+                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                            <input type="checkbox" name="health" value="سيولة" class="ml-2 mr-2"> <span id="h-blood">سيولة</span>
+                        </label>
+                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                            <input type="checkbox" name="health" value="حساسية" class="ml-2 mr-2"> <span id="h-allergy">حساسية</span>
+                        </label>
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-sm font-semibold mb-1" id="lbl-complaint">الشكوى الرئيسية</label>
+                        <textarea id="complaint" name="complaint" class="input-field h-24" placeholder="اكتب شكواك هنا..."></textarea>
+                    </div>
+                    <div class="flex gap-4 mt-8">
+                        <button type="button" onclick="nextStep(1)" class="flex-1 bg-gray-100 text-gray-600 py-4 rounded-xl font-bold" id="btn-prev2">السابق</button>
+                        <button type="button" onclick="nextStep(3)" class="flex-1 bg-slate-800 text-white py-4 rounded-xl font-bold" id="btn-next2">التالي</button>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div id="step3" class="hidden">
+                    <h2 class="text-lg font-bold mb-4 text-slate-700" id="step3-title">تأكيد الحجز</h2>
+                    <div class="bg-amber-50 p-6 rounded-2xl mb-8 border border-amber-100 text-center">
+                        <p class="text-amber-800 text-sm font-semibold mb-1" id="lbl-fees">قيمة الكشف</p>
+                        <p class="text-4xl font-bold text-slate-800">100 <span class="text-lg" id="currency">ج.م</span></p>
+                    </div>
+                    
+                    <label class="block text-sm font-semibold mb-3 text-slate-600" id="lbl-paymethod">اختر وسيلة الدفع:</label>
+                    <div class="grid grid-cols-1 gap-3 mb-6">
+                         <div onclick="selectPayment('voda')" id="pay-voda" class="payment-option p-4 rounded-xl cursor-pointer flex justify-between items-center">
+                            <span class="font-bold text-red-600">Vodafone Cash</span>
+                            <span class="text-xs text-gray-400">01068555946</span>
+                         </div>
+                         <div onclick="selectPayment('insta')" id="pay-insta" class="payment-option p-4 rounded-xl cursor-pointer flex justify-between items-center">
+                            <span class="font-bold text-indigo-700">InstaPay</span>
+                            <span class="text-xs text-gray-400">abdel nasser@instapay</span>
+                         </div>
+                    </div>
+
+                    <div class="flex gap-4 mt-8">
+                        <button type="button" onclick="nextStep(2)" class="flex-1 bg-gray-100 text-gray-600 py-4 rounded-xl font-bold" id="btn-prev3">السابق</button>
+                        <button type="submit" id="submitBtn" class="flex-1 bg-amber-600 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-amber-700 transition">
+                            <span id="btnText">تأكيد الحجز</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <div class="bg-white p-8 rounded-3xl text-center max-w-sm w-full">
+                <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">✓</div>
+                <h3 class="text-xl font-bold mb-2" id="msg-ok">تم الحجز بنجاح!</h3>
+                <p class="text-gray-500 text-sm mb-6" id="msg-desc">سنرسل لك تفاصيل الموعد عبر الواتساب قريباً.</p>
+                <button onclick="location.reload()" class="w-full bg-slate-800 text-white py-3 rounded-xl font-bold" id="btn-close">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLang = 'ar';
+        let currentStep = 1;
+        let selectedPaymentMethod = '';
+
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxpmT_CpKy-BOURPiP01tRwi1MuFOSNeSFEaLtYDZpYfSrixmoc4Csyl9oHZqc6mw38Vg/exec"; 
+
+        const translations = {
+            ar: { 
+                title: "عيادات تاج لطب الأسنان", 
+                subtitle: "د/ محمد عبد الناصر صبري",
+                tab1: "البيانات", tab2: "التاريخ المرضي", tab3: "الدفع",
+                step1Title: "المعلومات الشخصية", lblName: "الاسم ثلاثي", lblAge: "السن", lblJob: "الوظيفة", lblAddress: "العنوان", lblPhone: "رقم التواصل",
+                hDiabetes: "سكر", hPressure: "ضغط", hLiver: "كبد", hHeart: "قلب", hBlood: "سيولة", hAllergy: "حساسية",
+                step2Title: "هل تعاني من أي من الآتي؟", lblComplaint: "الشكوى الرئيسية",
+                step3Title: "تأكيد الحجز", lblFees: "قيمة الكشف", currency: "ج.م", lblPayMethod: "اختر وسيلة الدفع:",
+                btnNext: "التالي", btnPrev: "السابق", btnSubmit: "تأكيد الحجز", loading: "جاري الإرسال...",
+                msgOk: "تم الحجز بنجاح!", msgDesc: "سنرسل لك تفاصيل الموعد عبر الواتساب قريباً.", btnClose: "إغلاق", langBtn: "English"
+            },
+            en: { 
+                title: "TAJ Dental Clinics", 
+                subtitle: "Dr. Mohamed Abdel Nasser Sabry",
+                tab1: "Details", tab2: "History", tab3: "Payment",
+                step1Title: "Personal Information", lblName: "Full Name", lblAge: "Age", lblJob: "Job", lblAddress: "Address", lblPhone: "Phone Number",
+                hDiabetes: "Diabetes", hPressure: "Pressure", hLiver: "Liver", hHeart: "Heart", hBlood: "Thinners", hAllergy: "Allergy",
+                step2Title: "Do you suffer from any of these?", lblComplaint: "Main Complaint",
+                step3Title: "Confirm Booking", lblFees: "Check-up Fees", currency: "EGP", lblPayMethod: "Select Payment Method:",
+                btnNext: "Next", btnPrev: "Previous", btnSubmit: "Confirm Now", loading: "Sending...",
+                msgOk: "Success!", msgDesc: "We will contact you via WhatsApp soon.", btnClose: "Close", langBtn: "العربية"
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            document.getElementById('htmlTag').dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            updateTexts();
+        }
+
+        function updateTexts() {
+            const t = translations[currentLang];
+            document.getElementById('title').innerText = t.title;
+            document.getElementById('subtitle').innerText = t.subtitle;
+            document.getElementById('tab1').innerText = t.tab1;
+            document.getElementById('tab2').innerText = t.tab2;
+            document.getElementById('tab3').innerText = t.tab3;
+            document.getElementById('step1-title').innerText = t.step1Title;
+            document.getElementById('lbl-name').innerText = t.lblName;
+            document.getElementById('lbl-age').innerText = t.lblAge;
+            document.getElementById('lbl-job').innerText = t.lblJob;
+            document.getElementById('lbl-address').innerText = t.lblAddress;
+            document.getElementById('lbl-phone').innerText = t.lblPhone;
+            document.getElementById('h-diabetes').innerText = t.hDiabetes;
+            document.getElementById('h-pressure').innerText = t.hPressure;
+            document.getElementById('h-liver').innerText = t.hLiver;
+            document.getElementById('h-heart').innerText = t.hHeart;
+            document.getElementById('h-blood').innerText = t.hBlood;
+            document.getElementById('h-allergy').innerText = t.hAllergy;
+            document.getElementById('step2-title').innerText = t.step2Title;
+            document.getElementById('lbl-complaint').innerText = t.lblComplaint;
+            document.getElementById('step3-title').innerText = t.step3Title;
+            document.getElementById('lbl-fees').innerText = t.lblFees;
+            document.getElementById('currency').innerText = t.currency;
+            document.getElementById('lbl-paymethod').innerText = t.lblPayMethod;
+            document.getElementById('btn-next1').innerText = t.btnNext;
+            document.getElementById('btn-next2').innerText = t.btnNext;
+            document.getElementById('btn-prev2').innerText = t.btnPrev;
+            document.getElementById('btn-prev3').innerText = t.btnPrev;
+            document.getElementById('btnText').innerText = t.btnSubmit;
+            document.getElementById('langText').innerText = t.langBtn;
+        }
+
+        function nextStep(step) {
+            if (step > currentStep) {
+                const required = document.querySelectorAll(`#step${currentStep} [required]`);
+                let valid = true;
+                required.forEach(el => { if(!el.value) valid = false; });
+                if (!valid) { 
+                    alert(currentLang === 'ar' ? "برجاء ملئ البيانات المطلوبة" : "Please fill required fields");
+                    return; 
+                }
+            }
+            document.getElementById(`step${currentStep}`).classList.add('hidden');
+            document.getElementById(`step${currentStep}-tab`).classList.replace('step-active', 'text-gray-400');
+            currentStep = step;
+            document.getElementById(`step${currentStep}`).classList.remove('hidden');
+            document.getElementById(`step${currentStep}-tab`).classList.replace('text-gray-400', 'step-active');
+        }
+
+        function selectPayment(method) {
+            selectedPaymentMethod = method;
+            document.getElementById('pay-voda').classList.remove('selected');
+            document.getElementById('pay-insta').classList.remove('selected');
+            document.getElementById(`pay-${method.substring(0, 5)}`).classList.add('selected');
+        }
+
+        document.getElementById('bookingForm').onsubmit = function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            
+            btn.disabled = true;
+            btnText.innerText = "جاري التحقق...";
+
+            const formData = {
+                name: document.getElementById('patientName').value,
+                age: document.getElementById('age').value,
+                job: document.getElementById('job').value,
+                address: document.getElementById('address').value,
+                phone: document.getElementById('phone').value,
+                health: Array.from(document.querySelectorAll('input[name="health"]:checked')).map(el => el.value).join(', ') || "سليم",
+                complaint: document.getElementById('complaint').value,
+                payment: selectedPaymentMethod,
+                appointment: document.getElementById('appointmentTime').value // القيمة من الـ Dropdown
+            };
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify(formData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.result === "ALREADY_BOOKED") {
+                    alert("عذراً، هذا الموعد محجوز مسبقاً. يرجى اختيار موعد آخر.");
+                    btn.disabled = false;
+                    btnText.innerText = "تأكيد الحجز";
+                } else {
+                    document.getElementById('successModal').classList.remove('hidden');
+                }
+            })
+            .catch(err => {
+                // لو حصل CORS error والداتا وصلت، اظهري النجاح برضه
+                document.getElementById('successModal').classList.remove('hidden');
+            });
+        };
+    </script>
+</body>
+</html>
